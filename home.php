@@ -1,3 +1,8 @@
+<?php
+// Start the session
+session_start();
+?>
+
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -12,22 +17,23 @@
             </a>
             <div class="dropdown-menu" align="right">
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/home.php">Home</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_shifts.html">Store Hours</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_stock.html">Stock Information</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_reviews.html">Bouquet Reviews</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_shifts.php">Store Hours</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_stock.php">Stock Information</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_reviews.php">Bouquet Reviews</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/register.html">Register</a>
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html">Sign In</a>
             </div>
     </nav>
     <div class="container">
-        <h1> View Store Stock </h1>
-        <form action="sign_in.php" method="post">
-           USERNAME: <input type="text" class="form-control" name="USERNAME">
-        PASSWORD: <input type="text" class="form-control" name="PASSWORD">
-        <br>
-    <input type="Submit" class="btn btn-info btn-block">
-        </form>
+        <div class="row justify-content-center">
+        <div class="col-sm-10">
+        <h1 align="center"> Welcome to Ben's Flower Shop!</h1>
+        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_shifts.php"> Store Hours </a>
+        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_stock.php"> Stock Information </a>
+        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_reviews.php"> Item Reviews </a>
+
+    </div>
     </div>
 </body>
 </html>

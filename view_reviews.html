@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+<?php
+// Start the session
+session_start();
+?>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -8,10 +11,13 @@
 </head>
 <body>
     <div class="container">
-        <h1> View Store Hours </h1>
+        <h1> View Store Stock </h1>
         <form action="" method="post">
             <select class="form-control form-control-lg">
                 <option>Select Store</option>
+            </select>
+            <select class="form-control form-control-lg">
+                <option>Select Item</option>
             </select>
         </form>
     </div>
