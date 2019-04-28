@@ -19,7 +19,7 @@ session_start();
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/home.php">Home</a>
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_shifts.php">Store Hours</a>
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_stock.php">Stock Information</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_reviews.php">Bouquet Reviews</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_reviews.html">Bouquet Reviews</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/register.html">Register</a>
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html">Sign In</a>
@@ -31,7 +31,7 @@ session_start();
         <h1 align="center"> Welcome to Ben's Flower Shop!</h1>
         <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_shifts.php"> Store Hours </a>
         <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_stock.php"> Stock Information </a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_reviews.php"> Item Reviews </a>
+        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/view_reviews.html"> Item Reviews </a>
 
     </div>
     </div>

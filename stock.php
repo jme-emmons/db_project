@@ -8,10 +8,10 @@
                 $searchString = '%' . $_GET['searchDes'] . '%';
                 $stmt->bind_param(s, $searchString);
                 $stmt->execute();
-                $stmt->bind_result($Store_ID, $Item_upc, $Des, $stock);
+                $stmt->bind_result($STORE_ID, $ITEM_UPC, $DESCRIPTION, $CURRENT_STOCK);
                 echo "<table border=1><th>Store</th><th>Item UPC</th><th>Description</th><th>Stock</th>\n";
                 while($stmt->fetch()) {
-                        echo "<tr><td>$Store_ID</td><td>$Item_upc</td><td>$Des</td><td>$stock</td></tr>";
+                        echo "<tr><td>$STORE_ID</td><td>$ITEM_UPC</td><td>$DESCRIPTION</td><td>$CURRENT_STOCK</td></tr>";
                 }
                 echo "</table>";
 
