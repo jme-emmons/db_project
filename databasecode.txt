@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: mysql.cs.virginia.edu:3306
--- Generation Time: Apr 28, 2019 at 10:52 PM
+-- Generation Time: Apr 29, 2019 at 04:17 PM
 -- Server version: 5.5.60
 -- PHP Version: 5.4.16
 
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `Accounts` (
   `ROLE_TYPE` varchar(10) NOT NULL DEFAULT 'CUSTOMER',
   PRIMARY KEY (`ACCOUNT_ID`),
   UNIQUE KEY `USERNAME` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57977 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57978 ;
 
 --
 -- Triggers `Accounts`
@@ -52,18 +52,19 @@ DELIMITER ;
 --
 
 INSERT INTO `Accounts` (`ACCOUNT_ID`, `USERNAME`, `PASSWORD`, `ROLE_TYPE`) VALUES
+(5, 'MOTHEROFDRAGONS', 'ABCDEFGHIJKLM', 'OWNER'),
 (46360, 'Robert Says', 'A9274btg', 'EMPLOYEE'),
 (46363, 'Brock Sammson', 'lololololo34', 'EMPLOYEE'),
 (46364, 'Tyler Comm', 'dumbpassword', 'CUSTOMER'),
 (46369, 'Hajita Ubion', '15tn4iyn5', 'CUSTOMER'),
 (47578, 'JessicaE', 'ABCDEFGHIJKLM', 'EMPLOYEE'),
-(50000, 'MOTHEROFDRAGONS', 'ABCDEFGHIJKLM', 'OWNER'),
 (57971, 'Richard Woo', 'NLNKRBJKRE', 'EMPLOYEE'),
 (57972, 'Dean Venture', 'A3f35', 'CUSTOMER'),
 (57973, 'Johnny Quest', 'g34g34', 'CUSTOMER'),
 (57974, 'Andy Lao', 'So4857', 'CUSTOMER'),
 (57975, 'Walther Doogle', 'A981567', 'CUSTOMER'),
 (57976, 'Gunther Zhang', 'WinterIsComing19', 'CUSTOMER'),
+(57977, 'customer_test', 'ABCDEFGHIJKLMN', 'CUSTOMER'),
 (60000, 'test', 'ABCDEFGHJKLMN', 'CUSTOMER'),
 (70000, 'Iamacustomer', 'ABCDEFGHIJKLMN', 'CUSTOMER'),
 (90000, 'Iamacustomer4', 'ABCDEFGHIJKLMN', 'CUSTOMER');
@@ -80,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `Customers` (
   `CUSTOMER_NAME` varchar(40) DEFAULT NULL,
   `CUSTOMER_PHONE_NUMBER` int(100) DEFAULT NULL,
   PRIMARY KEY (`CUSTOMER_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23437907 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23437908 ;
 
 --
 -- Dumping data for table `Customers`
@@ -97,7 +98,8 @@ INSERT INTO `Customers` (`CUSTOMER_ID`, `ACCOUNT_ID`, `CUSTOMER_NAME`, `CUSTOMER
 (23437903, 57973, NULL, NULL),
 (23437904, 57972, NULL, NULL),
 (23437905, 46364, NULL, NULL),
-(23437906, 46369, NULL, NULL);
+(23437906, 46369, NULL, NULL),
+(23437907, 57977, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -131,11 +133,11 @@ DELIMITER ;
 --
 
 INSERT INTO `Employees` (`EMPLOYEE_ID`, `ACCOUNT_ID`, `STORE_ID`, `EMPLOYEE_NAME`, `EMPLOYEE_PHONE_NUMBER`) VALUES
-(7, 4, NULL, NULL, NULL),
-(8, 5, NULL, NULL, NULL),
-(9, 57971, NULL, NULL, NULL),
-(10, 46360, NULL, NULL, NULL),
-(11, 46363, NULL, NULL, NULL);
+(7, 4, 1, 'Ryan Daniels', 2147483647),
+(8, 5, 2, 'Brian Davis', 1622273425),
+(9, 57971, 3, 'Caleb Richards', 1234567890),
+(10, 46360, 1, 'Robert Downey Jr.', 2031526637),
+(11, 46363, 55, 'Chris Something', 1234561234);
 
 -- --------------------------------------------------------
 
@@ -149,14 +151,19 @@ CREATE TABLE IF NOT EXISTS `Owners` (
   `STORE_ID` int(10) DEFAULT NULL,
   `EMPLOYEE_ID` int(10) DEFAULT NULL,
   PRIMARY KEY (`OWNER_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `Owners`
 --
 
 INSERT INTO `Owners` (`OWNER_ID`, `ACCOUNT_ID`, `STORE_ID`, `EMPLOYEE_ID`) VALUES
-(3, 5, NULL, 8);
+(3, 5, NULL, 8),
+(8, 10, 8, 88),
+(9, 11, 9, 99),
+(10, 12, 10, 100),
+(11, 13, 14, 101),
+(12, 14, 17, 102);
 
 -- --------------------------------------------------------
 
@@ -188,9 +195,23 @@ CREATE TABLE IF NOT EXISTS `Reviews` (
 --
 
 INSERT INTO `Reviews` (`ITEM_UPC`, `CUSTOMER_ID`, `REVIEW_ID`, `REVIEW_TYPED`, `REVIEW_OUT_OF_TEN`) VALUES
-(1, 1, 1, 'This flower is great. ', 7),
-(1, 2, 0, 'Best flower ever', 10),
-(2, 1, 0, 'Looks the same as every other flower in the world', 4);
+(1, 0, 1, 'This flower is great. ', 7),
+(1, 0, 0, 'Best flower ever', 10),
+(2, 0, 0, 'Looks the same as every other flower in the world', 4),
+(55, 0, 2, 'What''s the difference between a Rose and a Tulip?', 7),
+(41, 0, 3, 'What is this box for?', 10),
+(18597, 0, 629, 'Why are flowers so expensive?', 5),
+(16627, 0, 425, 'Love it!', 10),
+(10293, 0, 198, 'Most beautiful flower I''ve ever seen', 10),
+(9088, 0, 883, 'Was not disappointed at all', 8),
+(0, 0, 0, '', 0),
+(0, 0, 0, '', 0),
+(1, 0, 0, 'I love roses', 10),
+(1, 0, 0, 'I love roses!!!', 9),
+(1, 0, 0, 'I love roses!!!', 10),
+(1, 0, 0, 'I love roses', 4),
+(1, 23437907, 0, 'tester', 3),
+(0, 0, 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -274,12 +295,12 @@ INSERT INTO `Shift_Hours` (`STORE_ID`, `EMPLOYEE_ID`, `DAY`, `TIME_PERIOD`) VALU
 
 CREATE TABLE IF NOT EXISTS `SHIPMENTS` (
   `STORE_ID` int(10) NOT NULL,
-  `SHIPMENT_ID` int(10) NOT NULL,
+  `SHIPMENT_ID` int(10) NOT NULL AUTO_INCREMENT,
   `OWNER_ID` int(10) NOT NULL,
   `ITEM_UPC` int(10) NOT NULL,
   `AMOUNT` int(10) NOT NULL,
   PRIMARY KEY (`SHIPMENT_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Triggers `SHIPMENTS`
@@ -297,11 +318,6 @@ DELIMITER ;
 -- Dumping data for table `SHIPMENTS`
 --
 
-INSERT INTO `SHIPMENTS` (`STORE_ID`, `SHIPMENT_ID`, `OWNER_ID`, `ITEM_UPC`, `AMOUNT`) VALUES
-(1, 1, 1, 1, 3),
-(1, 2, 1, 4, 8),
-(1, 3, 2, 3, 4),
-(1, 4, 22, 33, 44);
 
 -- --------------------------------------------------------
 
@@ -322,14 +338,14 @@ CREATE TABLE IF NOT EXISTS `Stock_Items` (
 --
 
 INSERT INTO `Stock_Items` (`STORE_ID`, `ITEM_UPC`, `DESCRIPTION`, `CURRENT_STOCK`) VALUES
-(1, 1, 'ROSE', 15),
+(1, 1, 'ROSE', 5),
 (1, 2, 'LILLY', -7),
 (1, 3, 'LAVENDER', 16),
 (1, 4, 'TULIP', 31),
 (1, 5, 'PEONY', 12),
 (1, 7, 'ROHAN PETALS', 16),
 (1, 8, 'FRANKLY ROSE', 30),
-(2, 1, 'ROSE', 12),
+(2, 1, 'ROSE', 2),
 (2, 2, 'LILLY', -2),
 (2, 4, 'TULIP', 28),
 (2, 5, 'PEONY', 9),
@@ -352,8 +368,15 @@ CREATE TABLE IF NOT EXISTS `Store` (
 --
 
 INSERT INTO `Store` (`STORE_ID`, `LOCATION`) VALUES
-(1, 'CHARLOTTESVILLE'),
-(2, 'FAIRFAX');
+(1, 'Charlottesville'),
+(2, 'Fairfax'),
+(3, 'Los Angeles'),
+(4, 'Beijing'),
+(5, 'Tokyo'),
+(6, 'Sydney'),
+(7, 'Toronto'),
+(9, 'Madrid'),
+(10, 'London');
 
 -- --------------------------------------------------------
 
@@ -363,13 +386,13 @@ INSERT INTO `Store` (`STORE_ID`, `LOCATION`) VALUES
 
 CREATE TABLE IF NOT EXISTS `Transactions` (
   `STORE_ID` int(10) NOT NULL,
-  `TRANSACTION_ID` int(10) NOT NULL,
+  `TRANSACTION_ID` int(10) NOT NULL AUTO_INCREMENT,
   `CUSTOMER_ID` int(10) NOT NULL,
   `EMPLOYEE_ID` int(10) NOT NULL,
   `ITEM_UPC` int(10) NOT NULL,
   `AMOUNT` int(10) NOT NULL,
   PRIMARY KEY (`TRANSACTION_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Triggers `Transactions`
@@ -388,15 +411,8 @@ DELIMITER ;
 --
 
 INSERT INTO `Transactions` (`STORE_ID`, `TRANSACTION_ID`, `CUSTOMER_ID`, `EMPLOYEE_ID`, `ITEM_UPC`, `AMOUNT`) VALUES
-(1, 0, 2, 2, 2, 2),
-(1, 1, 1, 2, 1, 2),
-(0, 111, 0, 0, 0, 0),
-(2, 113, 1, 2, 3, 4),
-(1, 114, 2, 2, 2, 2),
-(1, 115, 3, 3, 3, 3),
-(2, 116, 2, 2, 2, 2),
-(1, 117, 31, 31, 31, 31),
-(1, 118, 2, 2, 2, 2);
+(1, 1, 23437896, 0, 1, 1),
+(1, 2, 23437896, 9, 1, 2);
 
 -- --------------------------------------------------------
 
