@@ -1,0 +1,349 @@
+-- phpMyAdmin SQL Dump
+-- version 3.2.0
+-- http://www.phpmyadmin.net
+--
+-- Host: mysql.cs.virginia.edu:3306
+-- Generation Time: Apr 29, 2019 at 09:19 PM
+-- Server version: 5.5.60
+-- PHP Version: 5.4.16
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+--
+-- Database: `jme3tp_project`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Accounts`
+--
+
+CREATE TABLE IF NOT EXISTS `Accounts` (
+  `ACCOUNT_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `USERNAME` varchar(20) NOT NULL,
+  `PASSWORD` varchar(20) NOT NULL,
+  `ROLE_TYPE` varchar(10) NOT NULL DEFAULT 'CUSTOMER',
+  PRIMARY KEY (`ACCOUNT_ID`),
+  UNIQUE KEY `USERNAME` (`USERNAME`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=57985 ;
+
+--
+-- Triggers `Accounts`
+--
+DROP TRIGGER IF EXISTS `jme3tp_project`.`after_registration`;
+DELIMITER //
+CREATE TRIGGER `jme3tp_project`.`after_registration` AFTER INSERT ON `jme3tp_project`.`Accounts`
+ FOR EACH ROW BEGIN
+IF NEW.ROLE_TYPE = 'EMPLOYEE' THEN
+INSERT INTO Employees SET Employees.ACCOUNT_ID = NEW.ACCOUNT_ID;
+ELSEIF NEW.ROLE_TYPE = 'CUSTOMER' THEN
+INSERT INTO Customers SET Customers.ACCOUNT_ID= NEW.ACCOUNT_ID;
+ELSEIF NEW.ROLE_TYPE = 'OWNER' THEN
+INSERT INTO Owners SET Owners.ACCOUNT_ID= NEW.ACCOUNT_ID;
+INSERT INTO Employees SET Employees.ACCOUNT_ID= NEW.ACCOUNT_ID;
+END IF;
+END
+//
+DELIMITER ;
+
+--
+-- Dumping data for table `Accounts`
+--
+
+INSERT INTO `Accounts` (`ACCOUNT_ID`, `USERNAME`, `PASSWORD`, `ROLE_TYPE`) VALUES
+(57978, 'Iamacustomer', 'ABCDEFGHIJKLMN', 'CUSTOMER'),
+(57979, 'Iamacustomer2', 'ABCDEFGHIJKLMN', 'CUSTOMER'),
+(57980, 'Iamanemployee', 'ABCDEFGHIJKLMN', 'EMPLOYEE'),
+(57981, 'Iamanowner', 'ABCDEFGHIJKLMN', 'OWNER'),
+(57982, 'Iamacustomer3', 'ABCDEFGHIJKLMN', 'CUSTOMER'),
+(57983, 'Iamanemployee2', 'ABCDEFGHIJKLMN', 'EMPLOYEE'),
+(57984, 'Iamanemployee3', 'ABCDEFGHIJKLMN', 'EMPLOYEE');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Customers`
+--
+
+CREATE TABLE IF NOT EXISTS `Customers` (
+  `CUSTOMER_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ACCOUNT_ID` int(11) NOT NULL,
+  `CUSTOMER_NAME` varchar(40) DEFAULT NULL,
+  `CUSTOMER_PHONE_NUMBER` int(100) DEFAULT NULL,
+  PRIMARY KEY (`CUSTOMER_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23437911 ;
+
+--
+-- Dumping data for table `Customers`
+--
+
+INSERT INTO `Customers` (`CUSTOMER_ID`, `ACCOUNT_ID`, `CUSTOMER_NAME`, `CUSTOMER_PHONE_NUMBER`) VALUES
+(23437908, 57978, NULL, NULL),
+(23437909, 57979, NULL, NULL),
+(23437910, 57982, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Employees`
+--
+
+CREATE TABLE IF NOT EXISTS `Employees` (
+  `EMPLOYEE_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ACCOUNT_ID` int(10) NOT NULL,
+  `STORE_ID` int(10) DEFAULT NULL,
+  `EMPLOYEE_NAME` varchar(20) DEFAULT NULL,
+  `EMPLOYEE_PHONE_NUMBER` int(100) DEFAULT NULL,
+  PRIMARY KEY (`EMPLOYEE_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+
+--
+-- Triggers `Employees`
+--
+DROP TRIGGER IF EXISTS `jme3tp_project`.`after_new_emp`;
+DELIMITER //
+CREATE TRIGGER `jme3tp_project`.`after_new_emp` AFTER INSERT ON `jme3tp_project`.`Employees`
+ FOR EACH ROW UPDATE Owners
+     SET EMPLOYEE_ID = NEW.EMPLOYEE_ID
+   WHERE ACCOUNT_ID = NEW.ACCOUNT_ID
+//
+DELIMITER ;
+
+--
+-- Dumping data for table `Employees`
+--
+
+INSERT INTO `Employees` (`EMPLOYEE_ID`, `ACCOUNT_ID`, `STORE_ID`, `EMPLOYEE_NAME`, `EMPLOYEE_PHONE_NUMBER`) VALUES
+(12, 57980, NULL, NULL, NULL),
+(13, 57981, NULL, NULL, NULL),
+(14, 57983, NULL, NULL, NULL),
+(15, 57984, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Owners`
+--
+
+CREATE TABLE IF NOT EXISTS `Owners` (
+  `OWNER_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `ACCOUNT_ID` int(10) NOT NULL,
+  `STORE_ID` int(10) DEFAULT NULL,
+  `EMPLOYEE_ID` int(10) DEFAULT NULL,
+  PRIMARY KEY (`OWNER_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `Owners`
+--
+
+INSERT INTO `Owners` (`OWNER_ID`, `ACCOUNT_ID`, `STORE_ID`, `EMPLOYEE_ID`) VALUES
+(13, 57981, NULL, 13);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `password_check`
+--
+CREATE TABLE IF NOT EXISTS `password_check` (
+`ACCOUNT_ID` int(10)
+,`USERNAME` varchar(20)
+,`PASSWORD` varchar(20)
+,`ROLE_TYPE` varchar(10)
+);
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Reviews`
+--
+
+CREATE TABLE IF NOT EXISTS `Reviews` (
+  `ITEM_UPC` int(10) NOT NULL AUTO_INCREMENT,
+  `CUSTOMER_ID` int(10) NOT NULL,
+  `REVIEW_ID` int(10) NOT NULL,
+  `REVIEW_TYPED` text NOT NULL,
+  `REVIEW_OUT_OF_TEN` int(10) NOT NULL,
+  PRIMARY KEY (`ITEM_UPC`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `Reviews`
+--
+
+INSERT INTO `Reviews` (`ITEM_UPC`, `CUSTOMER_ID`, `REVIEW_ID`, `REVIEW_TYPED`, `REVIEW_OUT_OF_TEN`) VALUES
+(1, 23437910, 0, 'I love roses!!!', 10),
+(3, 23437908, 0, 'Great', 10),
+(4, 23437909, 0, 'Not my taste but my mother liked them.', 6),
+(5, 23437908, 0, 'Easy to take care of!', 7),
+(6, 23437908, 0, 'Tulips were beautiful', 4),
+(7, 23437909, 0, 'I think I am allergic to these.', 2),
+(10, 23437910, 0, 'Weird looking flower', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Shift_Hours`
+--
+
+CREATE TABLE IF NOT EXISTS `Shift_Hours` (
+  `SHIFT_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `STORE_ID` int(10) NOT NULL,
+  `EMPLOYEE_ID` int(10) NOT NULL,
+  `DAY` varchar(20) NOT NULL,
+  `TIME_PERIOD` varchar(20) NOT NULL,
+  PRIMARY KEY (`SHIFT_ID`),
+  UNIQUE KEY `STORE_ID` (`SHIFT_ID`),
+  UNIQUE KEY `STORE_ID_2` (`SHIFT_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `Shift_Hours`
+--
+
+INSERT INTO `Shift_Hours` (`SHIFT_ID`, `STORE_ID`, `EMPLOYEE_ID`, `DAY`, `TIME_PERIOD`) VALUES
+(3, 1, 12, 'Monday', '1-5'),
+(6, 2, 12, 'Tuesday', '8-5'),
+(7, 1, 12, 'Tuesday', '1-5');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `SHIPMENTS`
+--
+
+CREATE TABLE IF NOT EXISTS `SHIPMENTS` (
+  `STORE_ID` int(10) NOT NULL,
+  `SHIPMENT_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `OWNER_ID` int(10) NOT NULL,
+  `ITEM_UPC` int(10) NOT NULL,
+  `AMOUNT` int(10) NOT NULL,
+  PRIMARY KEY (`SHIPMENT_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Triggers `SHIPMENTS`
+--
+DROP TRIGGER IF EXISTS `jme3tp_project`.`after_ship`;
+DELIMITER //
+CREATE TRIGGER `jme3tp_project`.`after_ship` AFTER INSERT ON `jme3tp_project`.`SHIPMENTS`
+ FOR EACH ROW UPDATE Stock_Items
+     SET CURRENT_STOCK = CURRENT_STOCK + NEW.AMOUNT
+   WHERE ITEM_UPC = NEW.ITEM_UPC AND STORE_ID = NEW.STORE_ID
+//
+DELIMITER ;
+
+--
+-- Dumping data for table `SHIPMENTS`
+--
+
+INSERT INTO `SHIPMENTS` (`STORE_ID`, `SHIPMENT_ID`, `OWNER_ID`, `ITEM_UPC`, `AMOUNT`) VALUES
+(2, 4, 13, 10, 10),
+(1, 5, 13, 3, 20),
+(2, 6, 13, 1, 25),
+(2, 7, 13, 2, 10),
+(1, 8, 13, 1, 10);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Stock_Items`
+--
+
+CREATE TABLE IF NOT EXISTS `Stock_Items` (
+  `STORE_ID` int(10) NOT NULL,
+  `ITEM_UPC` int(10) NOT NULL,
+  `DESCRIPTION` varchar(100) NOT NULL,
+  `CURRENT_STOCK` int(10) NOT NULL,
+  PRIMARY KEY (`STORE_ID`,`ITEM_UPC`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Stock_Items`
+--
+
+INSERT INTO `Stock_Items` (`STORE_ID`, `ITEM_UPC`, `DESCRIPTION`, `CURRENT_STOCK`) VALUES
+(1, 1, 'ROSE', 11),
+(1, 2, 'LILLY', 10),
+(1, 3, 'LAVENDER', 20),
+(1, 4, 'TULIP', 31),
+(1, 5, 'PEONY', 12),
+(1, 7, 'ROHAN PETALS', 12),
+(2, 1, 'ROSE', 28),
+(2, 2, 'LILLY', 12),
+(2, 3, 'LAVENDER', 2),
+(2, 4, 'TULIP', 18),
+(2, 5, 'PEONY', 7),
+(2, 9, 'BLUEBELL', 5),
+(2, 10, 'Orchid', 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Store`
+--
+
+CREATE TABLE IF NOT EXISTS `Store` (
+  `STORE_ID` int(10) NOT NULL,
+  `LOCATION` varchar(50) NOT NULL,
+  PRIMARY KEY (`STORE_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Store`
+--
+
+INSERT INTO `Store` (`STORE_ID`, `LOCATION`) VALUES
+(1, 'Charlottesville'),
+(2, 'Fairfax');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Transactions`
+--
+
+CREATE TABLE IF NOT EXISTS `Transactions` (
+  `STORE_ID` int(10) NOT NULL,
+  `TRANSACTION_ID` int(10) NOT NULL AUTO_INCREMENT,
+  `CUSTOMER_ID` int(10) NOT NULL,
+  `EMPLOYEE_ID` int(10) NOT NULL,
+  `ITEM_UPC` int(10) NOT NULL,
+  `AMOUNT` int(10) NOT NULL,
+  PRIMARY KEY (`TRANSACTION_ID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+
+--
+-- Triggers `Transactions`
+--
+DROP TRIGGER IF EXISTS `jme3tp_project`.`after_tran`;
+DELIMITER //
+CREATE TRIGGER `jme3tp_project`.`after_tran` AFTER INSERT ON `jme3tp_project`.`Transactions`
+ FOR EACH ROW UPDATE Stock_Items
+     SET CURRENT_STOCK = CURRENT_STOCK - NEW.AMOUNT
+   WHERE ITEM_UPC = NEW.ITEM_UPC AND STORE_ID = NEW.STORE_ID
+//
+DELIMITER ;
+
+--
+-- Dumping data for table `Transactions`
+--
+
+INSERT INTO `Transactions` (`STORE_ID`, `TRANSACTION_ID`, `CUSTOMER_ID`, `EMPLOYEE_ID`, `ITEM_UPC`, `AMOUNT`) VALUES
+(1, 6, 23437910, 13, 10, 3),
+(2, 7, 23437910, 13, 10, 3),
+(1, 8, 23437910, 12, 1, 5),
+(1, 9, 23437909, 12, 7, 4),
+(1, 10, 23437908, 12, 3, 16),
+(2, 11, 23437909, 12, 4, 10),
+(2, 12, 23437908, 12, 5, 2),
+(1, 13, 23437910, 12, 1, 15);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `password_check`
+--
+DROP TABLE IF EXISTS `password_check`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`jme3tp`@`%` SQL SECURITY DEFINER VIEW `password_check` AS select `Accounts`.`ACCOUNT_ID` AS `ACCOUNT_ID`,`Accounts`.`USERNAME` AS `USERNAME`,`Accounts`.`PASSWORD` AS `PASSWORD`,`Accounts`.`ROLE_TYPE` AS `ROLE_TYPE` from `Accounts` where ((char_length(`Accounts`.`PASSWORD`) > 9) and (`Accounts`.`PASSWORD` <> `Accounts`.`USERNAME`)) WITH CASCADED CHECK OPTION;
