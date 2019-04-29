@@ -3,33 +3,6 @@
 session_start();
 if ($_SESSION['role'] == "CUSTOMER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 if ($_SESSION['role'] == "EMPLOYEE"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
-include_once("./library.php"); // To connect to the database
-$con = new mysqli($SERVER, $USERNAME, $PASSWORD, $DATABASE);
- // Check connection
-if (mysqli_connect_errno())
- {
-echo "Failed to connect to MySQL: " .
-mysqli_connect_error();
- }
-$user = $_SESSION['a_id'];
-$sql = "SELECT * FROM Owners WHERE ACCOUNT_ID = '$user'";
-if (!mysqli_query($con,$sql))
- {
- die('Error: ' . mysqli_error($con));
- }
-$result = mysqli_query($con, $sql);
-$count = mysqli_num_rows($result);
-if ($count == 1){
-    while ($row = mysqli_fetch_assoc($result)) {
-        $_SESSION['o_id'] = $row["OWNER_ID"];
-    }
-}
-else{
-echo "An issue occured in the sign in process.";
-echo "<br>";
-echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try Again</a>";
-}
-//mysqli_free_result($result);
 ?>
 
 <html lang="en">
@@ -59,15 +32,17 @@ echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try A
             </div>
     </nav>
     <div class="container">
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
         <div class="col-sm-10">
-        <h1 align="center"> Hi &nbsp; <?php echo $_SESSION['username']; ?></h1>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/owner_view_shifts.php"> My Shifts </a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/owner_make_transactions.php"> Make a Transaction </a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/owner_make_shipments.php"> Complete a Shipment</a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/owner_change_set_shifts.php">Assign Shifts</a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/owner_input_edit_stock.php"> Fix Stock</a>
-    </div>
+        <h1 align="center"> Our Stores</h1>
+
+<h2>Store 1</h2>
+Store 1 is located in the suburbs around Charlottesville, and only a few minutes from UVA's main campus. We offer a wide selection of exotic flowers, and rare plant species acquired from across the world. The owner of this store is Bob Ross. It is open Monday through Friday 9-5.
+<h2>Store 2</h2>
+
+Store 2 is located around Fairfax Lakes, near the CIA's building allegedly. We offer a wide selection of domestic/local flowers, and fruit plant species acquired from across the world. It is open all week 9-5.
+
+        </div></div>
     </div>
 </body>
 </html>

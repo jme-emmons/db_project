@@ -4,33 +4,6 @@ session_start();
 if ($_SESSION['role'] == "EMPLOYEE"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 
-include_once("./library.php"); // To connect to the database
-$con = new mysqli($SERVER, $USERNAME, $PASSWORD, $DATABASE);
- // Check connection
-if (mysqli_connect_errno())
- {
-echo "Failed to connect to MySQL: " .
-mysqli_connect_error();
- }
-$user = $_SESSION['a_id'];
-$sql = "SELECT * FROM Customers WHERE ACCOUNT_ID = '$user'";
-if (!mysqli_query($con,$sql))
- {
- die('Error: ' . mysqli_error($con));
- }
-$result = mysqli_query($con, $sql);
-$count = mysqli_num_rows($result);
-if ($count == 1){
-    while ($row = mysqli_fetch_assoc($result)) {
-        $_SESSION['c_id'] = $row["CUSTOMER_ID"];
-    }
-}
-else{
-echo "An issue occured in the sign in process.";
-echo "<br>";
-echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try Again</a>";
-}
-//mysqli_free_result($result);
 ?>
 
 <html lang="en">
@@ -56,12 +29,34 @@ echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try A
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/logout.php">Logout</a>
     </nav>
     <div class="container">
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
         <div class="col-sm-10">
-        <h1 align="center"> Hi &nbsp; <?php echo $_SESSION['username']; ?></h1>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/ReviewForm.php"> Review a Bouquet </a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/ViewTransactions.php"> Transaction History </a>
-    </div>
+        <h3> Here are the reviews we have seen at our shop!</h3>
+<?php
+require "dbutil.php";
+        $db = DbUtil::loginConnection();
+
+        $stmt = $db->stmt_init();
+
+        if($stmt->prepare("SELECT * FROM Reviews ORDER BY ITEM_UPC") or die(mysqli_error($db))) {
+                $searchString = '%' . $_GET['searchDes'] . '%';
+                $stmt->bind_param(s, $searchString);
+                $stmt->execute();
+                $stmt->bind_result($ITEM_UPC, $CUSTOMER_ID, $REVIEW_ID, $REVIEW_TYPED, $REVIEW_OUT_OF_TEN);
+                echo "<table border=1><th>Item UPC</th><th>Review</th><th>Rating out of 10</th>\n";
+                while($stmt->fetch()) {
+                        echo "<tr><td>$ITEM_UPC</td><td>$REVIEW_TYPED</td><td>$REVIEW_OUT_OF_TEN</td></tr>";
+                }
+                echo "</table>";
+
+                $stmt->close();
+        }
+
+        $db->close();
+?>
+
+</div> </div>
     </div>
 </body>
 </html>
+

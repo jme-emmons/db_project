@@ -4,33 +4,6 @@ session_start();
 if ($_SESSION['role'] == "EMPLOYEE"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 
-include_once("./library.php"); // To connect to the database
-$con = new mysqli($SERVER, $USERNAME, $PASSWORD, $DATABASE);
- // Check connection
-if (mysqli_connect_errno())
- {
-echo "Failed to connect to MySQL: " .
-mysqli_connect_error();
- }
-$user = $_SESSION['a_id'];
-$sql = "SELECT * FROM Customers WHERE ACCOUNT_ID = '$user'";
-if (!mysqli_query($con,$sql))
- {
- die('Error: ' . mysqli_error($con));
- }
-$result = mysqli_query($con, $sql);
-$count = mysqli_num_rows($result);
-if ($count == 1){
-    while ($row = mysqli_fetch_assoc($result)) {
-        $_SESSION['c_id'] = $row["CUSTOMER_ID"];
-    }
-}
-else{
-echo "An issue occured in the sign in process.";
-echo "<br>";
-echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try Again</a>";
-}
-//mysqli_free_result($result);
 ?>
 
 <html lang="en">
@@ -56,12 +29,15 @@ echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try A
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/logout.php">Logout</a>
     </nav>
     <div class="container">
-        <div class="row justify-content-center">
-        <div class="col-sm-10">
-        <h1 align="center"> Hi &nbsp; <?php echo $_SESSION['username']; ?></h1>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/ReviewForm.php"> Review a Bouquet </a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/ViewTransactions.php"> Transaction History </a>
-    </div>
+    <div class="col-sm-10">
+        <h1 align="center"> Our Stores</h1>
+<h2>Store 1</h2>
+Store 1 is located in the suburbs around Charlottesville, and only a few minutes from UVA's main campus. We offer a wide selection of exotic flowers, and rare plant species acquired from across the world. The owner of this store is Bob Ross. It is open Monday through Friday 9-5.
+<h2>Store 2</h2>
+
+Store 2 is located around Fairfax Lakes, near the CIA's building allegedly. We offer a wide selection of domestic/local flowers, and fruit plant species acquired from across the world. It is open all week 9-5.
+
+        </div></div>
     </div>
 </body>
 </html>

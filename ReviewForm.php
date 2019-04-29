@@ -1,36 +1,6 @@
 <?php
 // Start the session
 session_start();
-if ($_SESSION['role'] == "EMPLOYEE"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
-if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
-
-include_once("./library.php"); // To connect to the database
-$con = new mysqli($SERVER, $USERNAME, $PASSWORD, $DATABASE);
- // Check connection
-if (mysqli_connect_errno())
- {
-echo "Failed to connect to MySQL: " .
-mysqli_connect_error();
- }
-$user = $_SESSION['a_id'];
-$sql = "SELECT * FROM Customers WHERE ACCOUNT_ID = '$user'";
-if (!mysqli_query($con,$sql))
- {
- die('Error: ' . mysqli_error($con));
- }
-$result = mysqli_query($con, $sql);
-$count = mysqli_num_rows($result);
-if ($count == 1){
-    while ($row = mysqli_fetch_assoc($result)) {
-        $_SESSION['c_id'] = $row["CUSTOMER_ID"];
-    }
-}
-else{
-echo "An issue occured in the sign in process.";
-echo "<br>";
-echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try Again</a>";
-}
-//mysqli_free_result($result);
 ?>
 
 <html lang="en">
@@ -56,12 +26,15 @@ echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try A
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/logout.php">Logout</a>
     </nav>
     <div class="container">
-        <div class="row justify-content-center">
-        <div class="col-sm-10">
-        <h1 align="center"> Hi &nbsp; <?php echo $_SESSION['username']; ?></h1>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/ReviewForm.php"> Review a Bouquet </a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/ViewTransactions.php"> Transaction History </a>
-    </div>
-    </div>
-</body>
-</html>
+    <h2>Add a Review</h2>
+    <BR>
+    <form action="AddReview.php" method="post">
+    Item UPC: <input class="form-control" type="text" name="ITEM_UPC">
+    Review: <input class="form-control" type="text" name="REVIEW_TYPED">
+    Rating (1 to 10): <input class="form-control" type="text" name="REVIEW_OUT_OF_TEN">
+    <br>
+    <input class="btn btn-primary btn-block" type="Submit">
+    </form></div>
+    </body>
+    </html>
+

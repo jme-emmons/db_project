@@ -4,33 +4,6 @@ session_start();
 if ($_SESSION['role'] == "CUSTOMER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 
-include_once("./library.php"); // To connect to the database
-$con = new mysqli($SERVER, $USERNAME, $PASSWORD, $DATABASE);
- // Check connection
-if (mysqli_connect_errno())
- {
-echo "Failed to connect to MySQL: " .
-mysqli_connect_error();
- }
-$user = $_SESSION['a_id'];
-$sql = "SELECT * FROM Employees WHERE ACCOUNT_ID = '$user'";
-if (!mysqli_query($con,$sql))
- {
- die('Error: ' . mysqli_error($con));
- }
-$result = mysqli_query($con, $sql);
-$count = mysqli_num_rows($result);
-if ($count == 1){
-    while ($row = mysqli_fetch_assoc($result)) {
-        $_SESSION['e_id'] = $row["EMPLOYEE_ID"];
-    }
-}
-else{
-echo "An issue occured in the sign in process.";
-echo "<br>";
-echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try Again</a>";
-}
-//mysqli_free_result($result);
 ?>
 
 <html lang="en">
@@ -56,12 +29,54 @@ echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try A
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/logout.php">Logout</a>
     </nav>
     <div class="container">
-        <div class="row justify-content-center">
-        <div class="col-sm-10">
-        <h1 align="center"> Hi &nbsp; <?php echo $_SESSION['username']; ?></h1>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_view_shifts.php"> My Shifts </a>
-        <a class="btn btn-block btn-primary" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_make_transactions.php"> Make a Transaction </a>
-    </div>
+        <h1> New Transaction</h1>
+        <form action="" method="post">
+            Store Number 
+            <select class="form-control form-control-lg" name="store_number">
+                <option> 1 </option>
+                <option> 2 </option>
+            </select>
+            Customer ID
+            <input type="number" name="customer_id" class="form-control">
+            Item
+            <input type="number" name="item_upc" class="form-control">
+            Amount
+            <input type="number" name="amount" class="form-control">
+            <br>
+            <input type="submit" class="btn btn-primary btn-block" name="submit_transaction">
+        </form>
     </div>
 </body>
 </html>
+
+<?php
+  if (isset($_POST['submit_transaction'])) {
+    include_once("./library.php");
+    $con = new mysqli($SERVER, $USERNAME, $PASSWORD, $DATABASE);
+    if (mysqli_connect_errno()) 
+      {
+        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+      }
+    $user = $_SESSION['e_id'];
+    $sql = "INSERT INTO Transactions (STORE_ID, CUSTOMER_ID, EMPLOYEE_ID, ITEM_UPC, AMOUNT) VALUES ('$_POST[store_number]','$_POST[customer_id]', '$user','$_POST[item_upc]','$_POST[amount]')";
+
+    if (!mysqli_query($con,$sql))
+      {
+      die('Error: ' . mysqli_error($con));
+      }
+    echo "1 record added";
+    mysqli_close($con);
+  }
+?>
+
+
+
+
+
+
+
+
+
+
+
+

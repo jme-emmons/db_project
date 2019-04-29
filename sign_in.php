@@ -26,8 +26,8 @@ if ($count == 1){
         $_SESSION['role'] = $row["ROLE_TYPE"];
     }
     if ($_SESSION['role'] == "CUSTOMER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/customer_home.php");}
-    if ($_SESSION['role'] == "EMPLOYEE"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/employee_home.html");}
-    if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/owner_home.html");}
+    if ($_SESSION['role'] == "EMPLOYEE"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/employee_home.php");}
+    if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/owner_e_set.php");}
 }
 else{
 echo "Invalid Login Credentials.";
@@ -35,4 +35,3 @@ echo "<a href='http://www.cs.virginia.edu/~jme3tp/db_project/sign_in.html'>Try A
 }
 //mysqli_free_result($result);
 ?>
-

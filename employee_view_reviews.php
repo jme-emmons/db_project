@@ -1,7 +1,7 @@
 <?php
 // Start the session
 session_start();
-if ($_SESSION['role'] == "EMPLOYEE"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
+if ($_SESSION['role'] == "CUSTOMER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/~jme3tp/db_project/logout.php");}
 
 ?>
@@ -16,35 +16,36 @@ if ($_SESSION['role'] == "OWNER"){ header("Location: http://www.cs.virginia.edu/
 <body>
     <nav class="navbar navbar-dark bg-primary d-flex justify-content-between">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <img src="http://www.cs.virginia.edu/~jme3tp/db_project/flower.jpg" width="35" height="35" style="border-radius: 4px;" alt="Home">
+                <img src="http://www.cs.virginia.edu/~jme3tp/db_project/flower.jpg" width="30" height="30" style="border-radius: 4px;" alt="Home">
             </a>
             <div class="dropdown-menu" align="right">
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/customer_home.php">Home</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/customer_view_stores.php">Store Hours</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/customer_stock.php">Stock Information</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/customer_view_reviews.php">Bouquet Reviews</a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/ReviewForm.php">Review a Bouquet </a>
-                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/ViewTransactions.php">Transaction History</a>
+               <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_home.php">Home</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_view_stores.php">Store Hours</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_view_stock.php">Stock Information</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_view_reviews.php">Item Reviews</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_view_shifts.php"> My Shifts</a>
+                <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/employee_make_transactions.php">Make a Transaction</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="http://www.cs.virginia.edu/~jme3tp/db_project/logout.php">Logout</a>
     </nav>
     <div class="container">
-    <h1> Your Past Transactions </h1>
-    <br>
+    <div class="row justify-content-center">
+        <div class="col-sm-10">
+        <h3> Here are the reviews we have seen at our shop!</h3>
 <?php
 require "dbutil.php";
         $db = DbUtil::loginConnection();
 
         $stmt = $db->stmt_init();
-        $user = $_SESSION['c_id'];
-        if($stmt->prepare("SELECT * FROM Transactions WHERE CUSTOMER_ID = '$user'") or die(mysqli_error($db))) {
+
+        if($stmt->prepare("SELECT * FROM Reviews ORDER BY ITEM_UPC") or die(mysqli_error($db))) {
                 $searchString = '%' . $_GET['searchDes'] . '%';
                 $stmt->bind_param(s, $searchString);
                 $stmt->execute();
-                $stmt->bind_result($STORE_ID, $TRANSACTION_ID, $CUSTOMER_ID, $EMPLOYEE_ID, $ITEM_UPC, $AMOUNT);
-                echo "<table border=1><th>Store ID</th><th>Transaction Number</th><th>Item UPC</th><th>Amount Purchased</th>\n";
+                $stmt->bind_result($ITEM_UPC, $CUSTOMER_ID, $REVIEW_ID, $REVIEW_TYPED, $REVIEW_OUT_OF_TEN);
+                echo "<table border=1><th>Item UPC</th><th>Review</th><th>Rating out of 10</th>\n";
                 while($stmt->fetch()) {
-                        echo "<tr><td>$STORE_ID</td><td>$TRANSACTION_ID</td><td>$ITEM_UPC</td><td>$AMOUNT</td></tr>";
+                        echo "<tr><td>$ITEM_UPC</td><td>$REVIEW_TYPED</td><td>$REVIEW_OUT_OF_TEN</td></tr>";
                 }
                 echo "</table>";
 
@@ -53,8 +54,9 @@ require "dbutil.php";
 
         $db->close();
 ?>
-<br>
-<a href="http://www.cs.virginia.edu/~jme3tp/db_project/export_transactions.php" class="btn btn-primary btn-block">Export</a>
-</div>
-    </body>
-    </html>
+
+</div> </div>
+    </div>
+</body>
+</html>
+
